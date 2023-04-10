@@ -2,7 +2,6 @@ describe('First Spec', () => {
 
   let sut;
   beforeEach(() => {
-    console.log("Before Each")
     sut = {}
   });
 
