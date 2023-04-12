@@ -91,7 +91,6 @@ describe('HeroesComponent (Deep) Spec', () => {
   // - access component event emitter property
   // - emit event and validate against assertions.
 
-
   it('should call heroservice.delete by emitting event emitter', () => {
 
     spyOn(fixture.componentInstance, 'delete')
@@ -114,6 +113,12 @@ describe('HeroesComponent (Deep) Spec', () => {
 
   })
 
+  // Approach-3
+  // This is something to trigger event by emitting even from EventEmitters instead of from DOM elements
+  // - grabbing component instance
+  // - access component event emitter property
+  // - emit event and validate against assertions.
+
   it('should call heroservice.delete by triggerEventHandler', () => {
 
     spyOn(fixture.componentInstance, 'delete')
@@ -135,6 +140,38 @@ describe('HeroesComponent (Deep) Spec', () => {
     (<DebugElement>heroComponentsDEs[2]).triggerEventHandler('delete', null)
     expect(fixture.componentInstance.delete).toHaveBeenCalled();
     expect(fixture.componentInstance.delete).toHaveBeenCalledWith(HEROES[2]);
+
+  })
+
+  it('should add a new hero to the hero list when add button is clicked', () => {
+    mockHeroService.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges()
+
+
+    const name = "New Hero"
+
+    mockHeroService.addHero.and.returnValue(of({id: 5, name: name, strength: 10}));
+
+    const inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
+
+    // We now each child instance <app-hero> will have its own button on DOM, so we need
+    // to grab first button always as it will be besides input element for add new Hero
+    const addButtonElement = fixture.debugElement.queryAll(By.css('button'))[0];
+
+    inputElement.value = name; // set value to input box
+
+    // Trigger event to invoke add method
+    addButtonElement.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    const heroText = fixture.debugElement.query(By.css('ul')).nativeElement.textContent;
+
+
+    expect(heroText).toContain(name); // Video assertion
+
+    // Assertion to check new Instance of app-hero is added
+    const heroComponentsDEs: DebugElement[] = fixture.debugElement.queryAll(By.directive(HeroComponent))
+    expect(heroComponentsDEs.length).toEqual(4);
 
   })
 
