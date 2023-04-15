@@ -191,6 +191,38 @@ describe('HeroesComponent (Deep) Spec', () => {
 
   })
 
+
+  it('should NO new hero to the hero list when add button is clicked', () => {
+    mockHeroService.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges()
+
+    const noName = null;
+    mockHeroService.addHero.and.returnValue(of(null));
+
+    const inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
+
+    // We now each child instance <app-hero> will have its own button on DOM, so we need
+    // to grab first button always as it will be besides input element for add new Hero
+    const addButtonElement = fixture.debugElement.queryAll(By.css('button'))[0];
+
+    inputElement.value = noName; // set value to input box
+
+    // Trigger event to invoke add method
+    addButtonElement.triggerEventHandler('click', null);
+    fixture.detectChanges();
+
+    const heroText = fixture.debugElement.query(By.css('ul')).nativeElement.textContent;
+
+
+    expect(heroText).not.toContain(noName); // Video assertion
+
+    // Assertion to check new Instance of app-hero is added
+    const heroComponentsDEs: DebugElement[] = fixture.debugElement.queryAll(By.directive(HeroComponent))
+    expect(heroComponentsDEs.length).toEqual(3);
+
+  })
+
+
   it('should have the correct route for the first hero', () => {
 
     mockHeroService.getHeroes.and.returnValue(of(HEROES));
