@@ -6,8 +6,22 @@ import {HeroService} from "../hero.service";
 import {Hero} from "../hero";
 import {RouterTestingModule} from "@angular/router/testing";
 import {By} from "@angular/platform-browser";
-import {DebugElement} from "@angular/core";
+import {DebugElement, Directive, Input} from "@angular/core";
 
+// Define RouterLink stub
+
+@Directive({
+  selector: '[routerLink]',
+  host: {'(click)': 'onClick()'}
+})
+export class RouterLinkDirectiveStub {
+  @Input('routerLink') linkParams: any;
+  navigatedTo: any = null
+
+  onClick() {
+    this.navigatedTo = this.linkParams;
+  }
+}
 
 describe('HeroesComponent (Deep) Spec', () => {
 
@@ -26,7 +40,11 @@ describe('HeroesComponent (Deep) Spec', () => {
 
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
-      declarations: [HeroesComponent, HeroComponent],
+      declarations: [
+        HeroesComponent,
+        HeroComponent,
+        RouterLinkDirectiveStub
+      ],
       providers: [
         {provide: HeroService, useValue: mockHeroService}
       ],
@@ -147,9 +165,7 @@ describe('HeroesComponent (Deep) Spec', () => {
     mockHeroService.getHeroes.and.returnValue(of(HEROES));
     fixture.detectChanges()
 
-
     const name = "New Hero"
-
     mockHeroService.addHero.and.returnValue(of({id: 5, name: name, strength: 10}));
 
     const inputElement = fixture.debugElement.query(By.css('input')).nativeElement;
@@ -172,6 +188,29 @@ describe('HeroesComponent (Deep) Spec', () => {
     // Assertion to check new Instance of app-hero is added
     const heroComponentsDEs: DebugElement[] = fixture.debugElement.queryAll(By.directive(HeroComponent))
     expect(heroComponentsDEs.length).toEqual(4);
+
+  })
+
+  it('should have the correct route for the first hero', () => {
+
+    mockHeroService.getHeroes.and.returnValue(of(HEROES));
+    fixture.detectChanges()
+
+    const heroComponentsDEs: DebugElement[] = fixture.debugElement.queryAll(By.directive(HeroComponent))
+
+
+    /*
+      This will give Debug element for the anchor tag that has routerLink on it.
+     */
+    let routerLink = heroComponentsDEs[0].query(By.directive(RouterLinkDirectiveStub))
+      .injector.get(RouterLinkDirectiveStub);
+
+    // click on <app-hero> so that we can navigate to component and route URL can be updated
+    heroComponentsDEs[0].query(By.css('a')).triggerEventHandler('click', null)
+
+
+    // since testing against first hero
+    expect(routerLink.navigatedTo).toBe('/detail/1');
 
   })
 

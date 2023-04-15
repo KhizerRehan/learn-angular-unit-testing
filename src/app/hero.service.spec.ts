@@ -28,7 +28,7 @@ describe('HeroService Spec', () => {
 
   describe('getHero', () => {
 
-    it('should call get with correct URL using Callback Inject method', inject(
+    it('should call GET with correct URL using Callback Inject method', inject(
       [HeroService, HttpTestingController],
       (service: HeroService, controller: HttpTestingController) => {
         service.getHero(4).subscribe();
@@ -71,7 +71,7 @@ describe('HeroService Spec', () => {
         controller.verify();
       }));
 
-    it('should call get with correct URL using local instance', () => {
+    it('should call GET with correct URL using local instance', () => {
       heroService.getHero(5).subscribe();
       const req =  httpTestingController.expectOne('api/heroes/5');
       // "flush" to is used to mock the response of an HTTP
