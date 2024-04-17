@@ -1,6 +1,6 @@
 import { MessageService } from "./message.service";
 
-describe("service", () => {
+describe("MessageService", () => {
   let service: MessageService;
   beforeEach(() => {
     service = new MessageService();
