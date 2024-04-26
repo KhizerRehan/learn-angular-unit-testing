@@ -11,6 +11,10 @@ describe('HeroesComponent (shallow tests)', () => {
   let mockHeroService;
   let HEROES;
 
+  // Creating a Fake Component because we don't need actual interaction
+  // with the actual component instead just a shallow Testing for actual
+  // testing with component we use Deep Integration test.
+
   @Component({
     selector: 'app-hero',
     template: '<div></div>',
