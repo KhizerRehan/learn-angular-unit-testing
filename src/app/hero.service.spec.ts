@@ -54,6 +54,8 @@ describe('HeroService (Service)', () => {
       req.flush({ id: 4, name: 'SuperDude', strength: 100 });
 
 
+      expect(req.request.method).toBe('GET');
+
       httpTestingController.verify()
 
     
@@ -78,6 +80,7 @@ describe('HeroService (Service)', () => {
       // Assert
       const req = controller.expectOne('api/heroes/4');
       req.flush({ id: 4, name: 'SuperDude', strength: 100 });
+      expect(req.request.method).toBe('GET');
       httpTestingController.verify();
     }
   ));
