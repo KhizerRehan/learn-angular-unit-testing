@@ -10,6 +10,8 @@ describe("HeroComponent (Shallow Tests)", () => {
     TestBed.configureTestingModule({
       declarations: [HeroComponent],
       schemas: [NO_ERRORS_SCHEMA],
+      // NO_ERRORS_SCHEMA As Console will throw Error as Template is using `routerLink`
+      // We need to inform configureTestingModule we are ignoring ATM.
     });
     fixture = TestBed.createComponent(HeroComponent);
   });

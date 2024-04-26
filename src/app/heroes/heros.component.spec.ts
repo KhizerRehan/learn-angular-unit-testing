@@ -1,6 +1,5 @@
 import { of } from "rxjs";
 import { Hero } from "../hero";
-import { HeroService } from "../hero.service";
 import { HeroesComponent } from "./heroes.component";
 
 describe("HerosComponent", () => {
@@ -23,6 +22,10 @@ describe("HerosComponent", () => {
     component = new HeroesComponent(mockHeroService);
   });
 
+  it('should create a component', () => {
+    expect(component).toBeTruthy();
+  });
+
   // Extra Test by Khizer
   it("should set static mock defined in test", () => {
     component.heroes = [];
@@ -35,9 +38,9 @@ describe("HerosComponent", () => {
     /*
      To Avoid Error:
      - TypeError: Cannot read properties of undefined (reading 'subscribe')
-     - Actual Service Calls backend HTTP call which required .subscribe call 
+     - Actual Service Calls backend HTTP call which required .subscribe call
      to be invoked.
-     - In Order to create spyMock we need to return return obs to act as obs$ 
+     - In Order to create spyMock we need to return obs to act as obs$
      being returned
     */
 
@@ -62,7 +65,7 @@ describe("HerosComponent", () => {
     component.delete(HEROES[2]);
 
     expect(mockHeroService.deleteHero).toHaveBeenCalled();
-    expect(mockHeroService.deleteHero).toHaveBeenCalledTimes(1); // Extra Assettion
-    expect(mockHeroService.deleteHero).toHaveBeenCalledWith(HEROES[2]); // Extra Assettion
+    expect(mockHeroService.deleteHero).toHaveBeenCalledTimes(1); // Extra Assertion
+    expect(mockHeroService.deleteHero).toHaveBeenCalledWith(HEROES[2]); // Extra Assertion
   });
 });
