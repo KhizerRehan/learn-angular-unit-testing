@@ -34,7 +34,55 @@ export class HeroDetailComponent implements OnInit {
   }
 
  save(): void {
-    this.heroService.updateHero(this.hero)
-      .subscribe(() => this.goBack());
+    this.debounce(() =>{
+      this.heroService.updateHero(this.hero)
+        .subscribe(() => this.goBack());
+    }, 250, false)();
+  }
+
+  saveWithPromise(): void {
+    this.somethirdPaertyPromise().then(() => {
+        this.heroService.updateHero(this.hero)
+          .subscribe(() => this.goBack());
+      });
+   }
+
+
+   saveWithPromiseWithDelay(): void {
+    this.somethirdPaertyPromise().then(() => {
+        this.heroService.updateHero(this.hero)
+          .subscribe(() => this.goBack());
+      });
+   }
+
+
+  somethirdPaertyPromise() {
+    return new Promise((resolve, _) => {
+      resolve(null);
+    });
+  }
+
+  somethirdPaertyPromiseWithDelay() {
+    return new Promise((resolve, _) => {
+      setTimeout(() => {
+        resolve(null);
+      }, 1000);
+    });
+  }
+
+  debounce(func, wait, immediate) {
+    let timeout;
+    return function() {
+      let context = this;
+      let args = arguments;
+      let later = function() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+      let callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
   }
 }
