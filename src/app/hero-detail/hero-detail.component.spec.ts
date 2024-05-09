@@ -14,7 +14,7 @@ import { HeroDetailComponent } from "./hero-detail.component";
 import { of } from "rxjs";
 import { FormsModule } from "@angular/forms";
 
-fdescribe("HeroDetailComponent", () => {
+describe("HeroDetailComponent", () => {
   let mockHeroService;
   let mockLocation;
   let mockActivatedRoute;
