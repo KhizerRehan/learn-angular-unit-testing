@@ -49,9 +49,9 @@ export class HeroDetailComponent implements OnInit {
 
 
    saveWithPromiseWithDelay(): void {
-    this.somethirdPaertyPromise().then(() => {
-        this.heroService.updateHero(this.hero)
-          .subscribe(() => this.goBack());
+    this.somethirdPaertyPromiseWithDelay().then(() => {
+      this.heroService.updateHero(this.hero)
+      .subscribe(() => this.goBack());
       });
    }
 

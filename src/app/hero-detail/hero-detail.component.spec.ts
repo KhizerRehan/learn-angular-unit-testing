@@ -166,8 +166,6 @@ fdescribe("HeroDetailComponent", () => {
     flush();
     expect(mockHeroService.updateHero).toHaveBeenCalled();
 
-    // fixture.whenStable().then(() => {
-    // });
   }));
 
   it("should call updateHero when saveWithPromiseWithDelay is called", fakeAsync(() => {
@@ -176,7 +174,7 @@ fdescribe("HeroDetailComponent", () => {
 
     fixture.componentInstance.saveWithPromiseWithDelay();
 
-    flush();
+    tick(1000); // or flush()
     expect(mockHeroService.updateHero).toHaveBeenCalled();
     expect(mockHeroService.updateHero).toHaveBeenCalledTimes(1);
 
